@@ -1,0 +1,11 @@
+.window {
+    position: absolute;
+    z-index: 1;
+    left: 30%;
+    top: 5%;
+}
+
+.window-body {
+    box-sizing: border-box;
+    height: calc(100% - 38px);
+}

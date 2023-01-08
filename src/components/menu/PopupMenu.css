@@ -1,0 +1,105 @@
+.pop-up-menu {
+    position: absolute;
+    bottom: 30px;
+    height: 480px;
+    width: 380px;
+    border: #4282D6;
+    border-style: solid;
+    border-radius: 10px;
+    font-family: Tahoma, "Noto Sans", sans-serif;
+}
+
+.header {
+    border-radius: 10px 10px 0 0;
+    height: 15%;
+    background: linear-gradient(180deg,#0997ff,#0053ee 8%,#0050ee 40%,#06f 88%,#06f 93%,#005bff 95%,#003dd7 96%,#003dd7);
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    text-shadow: rgb(0 0 0 / 70%) 1px 1px;
+}
+
+.menu {
+    display: flex;
+    height: 75%;
+}
+
+.menu-left-side {
+    border: #A8BAD6;
+    border-width: 0 1px 0 0;
+    border-style: solid;
+    width: 50%;
+    background-color: white;
+}
+
+.menu-right-side {
+    border: #A8BAD6;
+    border-width: 0 0 0 1px;
+    border-style: solid;
+    width: 50%;
+    background-color: #D2E5FA;
+}
+
+.user-icon {
+    border-radius: 20px;
+    padding: 10px;
+    height: 52px;
+    width: 52px;
+}
+
+.my-menu {
+    height: 40%;
+    display: inline-block;
+    vertical-align: top;
+    font-family: Tahoma, "Noto Sans", sans-serif;
+    margin: 5px;
+}
+
+.my-item {
+    color: #0E245F;
+    font-size: 12px;
+    font-weight: 700;
+    width: 100%;
+    height: 33%;
+    display: flex;
+    align-items: center;
+    float: right;
+}
+
+.my-item:hover {
+    background-color: #0E245F;
+    color: white;
+}
+
+.my-item img {
+    padding: 5px;
+}
+
+.footer {
+    height: 10%;
+    background: linear-gradient(180deg,#0997ff,#0053ee 8%,#0050ee 40%,#06f 88%,#06f 93%,#005bff 95%,#003dd7 96%,#003dd7);
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px;
+}
+
+.footer-option {
+    width: 100px;
+    color: white;
+    display: flex;
+    align-items: center;
+    float: right;
+    padding: 5px;
+}
+
+.footer-option:hover {
+    background: #0050ee;
+}
+
+.footer-option img {
+    height: 30px;
+    width: 30px;
+    padding: 7px;
+}

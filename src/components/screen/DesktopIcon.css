@@ -1,0 +1,35 @@
+.icons {
+    height: 200px;
+    width: 100px;
+    position: absolute
+}
+
+.icons img {
+    width: 50px;
+    height: 50px;
+}
+
+.desktop-icon {
+    padding: 10px;
+    text-align: center;
+    width: 60px;
+    height: 70px;
+    color: white;
+}
+
+.desktop-icon-focused {
+    padding: 10px;
+    text-align: center;
+    width: 60px;
+    height: 70px;
+    color: white;
+}
+
+.desktop-icon-focused img {
+    filter: drop-shadow(0 0 #00008B)
+}
+
+.desktop-icon-focused span {
+    background-color: #0b61ff;
+}
+
