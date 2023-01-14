@@ -1,0 +1,99 @@
+.bootup-screen {
+    background: black;
+    height: 100vh;
+}
+
+.logo {
+    position: relative;
+    margin: 0 auto;
+    top: 20%
+}
+
+.logo img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 24px;
+    overflow: hidden;
+    height: 275px;
+}
+
+.progress-bar {
+    position: relative;
+    top: 25%;
+    width: 200px;
+    height: 12px;
+    border-radius: 5px;
+    outline-style: solid;
+    outline-color: white;
+    margin: 0 auto;
+    outline-width: 2px;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.progress-dash {
+    content: '';
+    position: absolute;
+    width: 3em;
+    height: 70%;
+    border-radius: 0.2em;
+    background: 
+        linear-gradient(
+            to right,
+            transparent 30%,
+            black 30%, black 35%,
+            transparent 35%, transparent 65%,
+            black 65%, black 70%,
+            transparent 70%
+        ),
+        linear-gradient(
+            blue 0%,
+            royalblue 17%,
+            deepskyblue 32%, deepskyblue 45%,
+            royalblue 60%,
+            blue 100%
+        );
+    filter: brightness(1.2);
+}
+
+.button-container {
+    position: relative;
+    top: 25%;
+}
+
+.start-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 250px;
+    height: 70px;
+    font-size: 24px;
+    overflow: hidden;
+}
+
+.blue {
+    color: #3B77BC;
+}
+
+.red {
+    color: #DE482B;
+}
+
+.green {
+    color: #81C046;
+}
+
+.yellow {
+    color: #FCCF03
+}
+
+.disclaimer {
+    font-size: 14px;
+    padding: 50px;
+    position: absolute;
+    top: 80%;
+    font-family: "Pixelated MS Sans Serif";
+    color: white;
+    width: 300px;
+}

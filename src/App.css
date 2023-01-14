@@ -1,5 +1,9 @@
-.App {
+.main {
     background-image: url("data/windows-xp-background.jpg");
     background-size: cover;
+    height: 100%;
+}
+
+.App {
     height: 100vh;
 }

@@ -3,6 +3,7 @@ import { MenuItemState } from "./components/menu-bar/MenuBarItem";
 import "./App.css"
 import PopupMenu from "./components/menu/PopupMenu";
 import Screen from "./components/screen/Screen"
+import BootupScreen from "./components/screen/BootupScreen";
 import {useRef, useEffect} from 'react'
 import useState from 'react-usestateref'
 import resumeIcon from './data/resume-icon.png'
@@ -10,9 +11,10 @@ import aboutMeIcon from './data/about-me-icon.png'
 import githubIcon from './data/github-icon.png'
 import readMeIcon from './data/readme.txt.png'
 import ResumeContent from "./components/windows/ResumeContent";
-import ReadMeContent from "./components/windows/ReadMeContent";
+import ReadMeContent from './components/windows/ReadMeContent';
 import AboutMeContent from "./components/windows/AboutMeWindow";
 import Window from "./components/windows/Window";
+import startUpSound from './data/windows-xp-startup-sound.mp3'
 
 
 function App() {
@@ -34,8 +36,8 @@ function App() {
     {
       id: 1,
       title: "About Me",
-      initialWidth: 800,
-      initialHeight: 1000,
+      initialWidth: 650,
+      initialHeight: 650,
       content: <AboutMeContent/>,
       icon: aboutMeIcon,
       open: false,
@@ -63,10 +65,11 @@ function App() {
 
   const [isMenuActive, setMenuActive] = useState(false)
   const [zIndex, setZIndex, zIndexStateRef] = useState(1)
-  const [openWindows, setOpenWindows] = useState<MenuItemState[]>([])
+  const [openWindows, setOpenWindows, openWindowsStateRef] = useState<MenuItemState[]>([])
   const [windows, setWindows, windowsStateRef] = useState(initialWindows)
   const menuRef = useRef<HTMLDivElement>(null)
   const startButtonRef = useRef<HTMLDivElement>(null)
+  const [isBooted, setBooted] = useState(false)
 
   const desktopIcons = [
     {
@@ -96,8 +99,16 @@ function App() {
   ]
 
   function setActiveWindow(id: number) {
-    const updatedWindows = windows.map((window) => {
+    const updatedOpenWindows = openWindowsStateRef.current.map((openWindow) => {
+      openWindow.active = (openWindow.id === id)
+      return openWindow
+    })
+    setOpenWindows(updatedOpenWindows)
+    setZIndex(zIndexStateRef.current + 1)
+    const updatedWindows = windowsStateRef.current.map((window) => {
       window.active = (window.id === id)
+      window.zIndex = window.id === id ? zIndexStateRef.current : window.zIndex
+      window.minimized = window.id === id ? false : window.minimized
       return window
     })
     setWindows(updatedWindows)
@@ -107,15 +118,20 @@ function App() {
     const updatedWindows = [...windows]
     // Window is not open, need to add to openWindows
     if (!updatedWindows[id].open) {
-      const updatedOpenWindows = [...openWindows]
+      const updatedOpenWindows = openWindows.map((openWindow) => {
+        openWindow.active = (openWindow.id === id)
+        return openWindow
+      })
       updatedOpenWindows.push({
         id: id,
         title: updatedWindows[id].title,
-        active: updatedWindows[id].active,
+        active: true,
         icon: updatedWindows[id].icon,
         onClick: () => setActiveWindow(id),
       })
       setOpenWindows(updatedOpenWindows)
+    } else {
+      setActiveWindow(id)
     }
     setZIndex(zIndex + 1)
     const openWindow = {
@@ -125,7 +141,6 @@ function App() {
       zIndex: zIndex,
     }
     updatedWindows[id] = openWindow
-    setActiveWindow(id)
     setWindows(updatedWindows)
   }
 
@@ -135,8 +150,6 @@ function App() {
     const updatedOpenWindows = [...openWindows]
     const index = updatedOpenWindows.findIndex(window => window.id === id)
     updatedOpenWindows.splice(index, 1)
-    setOpenWindows(updatedOpenWindows)
-
     const closedWindow = {
       ...updatedWindows[id],
       open: false,
@@ -144,6 +157,16 @@ function App() {
       maximized: false,
     }
     updatedWindows[id] = closedWindow
+    for (var i = updatedOpenWindows.length - 1; i >= 0; i--) {
+      const openWindow = updatedOpenWindows[i]
+      const windowId = openWindow.id
+      if (!windows[windowId].minimized) {
+        setActiveWindow(windowId)
+        openWindow.active = true
+        updatedOpenWindows[i] = openWindow
+      }
+    }
+    setOpenWindows(updatedOpenWindows)
     setWindows(updatedWindows)
   }
 
@@ -155,6 +178,21 @@ function App() {
     }
     updatedWindows[id] = minimizedWindow
     setWindows(updatedWindows)
+
+    const updatedOpenWindows = openWindows.map((openWindow) => {
+      openWindow.active = false
+      return openWindow 
+    })
+    for (var i = updatedOpenWindows.length - 1; i >= 0; i--) {
+      const openWindow = updatedOpenWindows[i]
+      const windowId = openWindow.id
+      if (!windows[windowId].minimized && windowId !== id) {
+        setActiveWindow(windowId)
+        openWindow.active = true
+        updatedOpenWindows[i] = openWindow
+      }
+    }
+    setOpenWindows(updatedOpenWindows)
   }
 
   function clickMaximize(id: number) {
@@ -175,22 +213,13 @@ function App() {
   function initWindows() {
     initialWindows.forEach((window) => {
 
-      function setWindowActive(e: MouseEvent) {
+      function clickWindow(e: MouseEvent) {
         if (window.windowRef.current &&
           window.windowRef.current.contains(e.target as Node)) {
-          setZIndex(zIndexStateRef.current + 1)
-          const updatedWindows = [...windowsStateRef.current]
-          const openWindow = {
-            ...updatedWindows[window.id],
-            zIndex: zIndexStateRef.current,
-          }
-          updatedWindows[window.id] = openWindow
-          setActiveWindow(window.id)
-          setWindows(updatedWindows)
+            setActiveWindow(window.id)
         }
       }
-
-      document.addEventListener('mousedown', setWindowActive)
+      document.addEventListener('mousedown', clickWindow)
     })
   }
 
@@ -231,11 +260,21 @@ function App() {
     setMenuActive(!isMenuActive)
   }
 
+  function onClickStart() {
+    setBooted(true)
+    new Audio(startUpSound).play()
+  }
+
   return (
     <div className="App">
-      <Screen desktopIcons={desktopIcons} createWindows={createwindows}/>
-      <PopupMenu menuRef={menuRef} isMenuActive={isMenuActive}/>
-      <MenuBar startButtonRef={startButtonRef} setMenuOnClick={setMenuOnClick} openWindows={openWindows}/>
+      {isBooted ? <div className="main">
+        <Screen desktopIcons={desktopIcons} createWindows={createwindows}/>
+        <PopupMenu menuRef={menuRef} isMenuActive={isMenuActive}/>
+        <MenuBar startButtonRef={startButtonRef} setMenuOnClick={setMenuOnClick} openWindows={openWindows}/>
+      </div> :
+      <div>
+        <BootupScreen onClickStart={onClickStart}/>
+      </div>}
     </div>
   );
 }

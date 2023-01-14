@@ -27,15 +27,15 @@ const PopupMenu: React.FC<PopupMenuProps> = (props) => {
                 </div>
                 <div className='menu-right-side'>
                     <div className='my-menu'>
-                            <div className='my-item'>
+                            <div className='my-item' onClick={() => alert("More features coming soon!")}>
                                 <img src={documentsIcon}/>
                                 <span>My Documents</span>
                             </div>
-                            <div className='my-item'>
+                            <div className='my-item' onClick={() => alert("More features coming soon!")}>
                                 <img src={picturesIcon}/>
                                 <span>My Pictures</span>
                             </div>
-                            <div className='my-item'>
+                            <div className='my-item' onClick={() => alert("More features coming soon!")}>
                                 <img src={musicIcon}/>
                                 <span>My Music</span>
                             </div>
