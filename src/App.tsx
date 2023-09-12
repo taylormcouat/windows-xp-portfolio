@@ -14,7 +14,6 @@ import ResumeContent from "./components/windows/ResumeContent";
 import ReadMeContent from './components/windows/ReadMeContent';
 import AboutMeContent from "./components/windows/AboutMeWindow";
 import Window from "./components/windows/Window";
-import startUpSound from './data/windows-xp-startup-sound.mp3'
 
 
 function App() {
@@ -207,21 +206,20 @@ function App() {
   }
 
   useEffect(() => {
+    function initWindows() {
+      initialWindows.forEach((window) => {
+  
+        function clickWindow(e: MouseEvent) {
+          if (window.windowRef.current &&
+            window.windowRef.current.contains(e.target as Node)) {
+              setActiveWindow(window.id)
+          }
+        }
+        document.addEventListener('mousedown', clickWindow)
+      })
+    }
     initWindows()
   }, [])
-
-  function initWindows() {
-    initialWindows.forEach((window) => {
-
-      function clickWindow(e: MouseEvent) {
-        if (window.windowRef.current &&
-          window.windowRef.current.contains(e.target as Node)) {
-            setActiveWindow(window.id)
-        }
-      }
-      document.addEventListener('mousedown', clickWindow)
-    })
-  }
 
   function createwindows() {
      return windows.map((window) => (
@@ -262,7 +260,6 @@ function App() {
 
   function onClickStart() {
     setBooted(true)
-    new Audio(startUpSound).play()
   }
 
   return (
